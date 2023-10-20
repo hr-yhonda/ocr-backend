@@ -10,13 +10,13 @@ export class OCRController {
   @Post()
   async text(@BodyParams() payload: any): Promise<string> {
     const base64EncodedImage = payload['base64EncodedImage']
-    console.log(`payload=' + ${JSON.stringify(payload)}`)
-    console.log(`base64EncodedImage=${base64EncodedImage}`)
+    const lang = payload['lang'] || 'eng'
+    console.log(`base64EncodedImage=${base64EncodedImage ? 'exists' : 'none'} lang=${lang}`)
 
     let recognizedText: string = ""
     await Tesseract.recognize(
       base64EncodedImage,
-      'eng'
+      lang,
     ).then(({ data: { text } }) => {
       recognizedText = text
     }).catch(error => {
